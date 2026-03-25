@@ -149,7 +149,14 @@ export default function FormulaInput({ value, onChange }) {
           {token.type === "letter" ||
           token.type === "space" ||
           token.type === "number" ? (
-            <span style={{ padding: token.type === "space" ? "0 .2rem" : "" }}>
+            <span
+              onClick={(e) => {
+                e.stopPropagation();
+                setCursorIndex(i + 1);
+                focusInput();
+              }}
+              style={{ padding: token.type === "space" ? "0 .2rem" : "" }}
+            >
               {token.value}
             </span>
           ) : (
