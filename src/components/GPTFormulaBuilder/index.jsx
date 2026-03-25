@@ -2,6 +2,7 @@ import { useState } from "react";
 import FormulaInput from "./components/GPTFormulaInput";
 import { Button } from "@mui/material";
 import FormulaPopover from "./components/GPTFormulaPopover";
+import { useFormulaInput } from "./hooks/useFormulaInput";
 
 const sectionsData = [
   {
@@ -49,9 +50,38 @@ const sectionsData = [
   },
 ];
 
+const selectedFunctionToken = {
+  if: [
+    { type: "function", value: "if(" },
+    { type: "statement-terminator", value: ";" },
+    { type: "statement-terminator", value: ";" },
+    { type: "paren", value: ")" },
+  ],
+  sum: [
+    { type: "function", value: "sum(" },
+    { type: "statement-terminator", value: ";" },
+    { type: "paren", value: ")" },
+  ],
+  round: [
+    { type: "function", value: "round(" },
+    { type: "paren", value: ")" },
+  ],
+};
+
+const getFunctionTokens = (functionName) => {
+  return selectedFunctionToken[functionName] || [];
+};
+
 const GPTFormulaBuilder = () => {
   const [tokens, setTokens] = useState([]);
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
+  const {
+    cursorIndex,
+    setCursorIndex,
+    insertToken,
+    removeToken,
+    moveCursorIndex,
+  } = useFormulaInput({ value: tokens, onChange: setTokens });
 
   const handlePopoverOpen = (event) => {
     setPopoverAnchorEl(event.currentTarget);
@@ -62,11 +92,25 @@ const GPTFormulaBuilder = () => {
   };
 
   const handlePopoverSelect = (item) => {
-    console.log("Seleccionado:", item);
+    if (item.section.kind === "function") {
+      const functionTokens = getFunctionTokens(item.value);
+      console.log("functionTokens", functionTokens);
+      functionTokens.forEach((token) => insertToken(token));
+      return;
+    }
+    insertToken({ type: item.section.kind, value: item.value });
   };
   return (
     <>
-      <FormulaInput value={tokens} onChange={setTokens} />
+      <FormulaInput
+        value={tokens}
+        onChange={setTokens}
+        cursorIndex={cursorIndex}
+        setCursorIndex={setCursorIndex}
+        insertToken={insertToken}
+        removeToken={removeToken}
+        moveCursorIndex={moveCursorIndex}
+      />
       <Button onClick={handlePopoverOpen}>Abrir</Button>
 
       <FormulaPopover

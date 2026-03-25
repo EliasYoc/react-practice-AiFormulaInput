@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import { Box } from "@mui/material";
 import styled from "styled-components";
-import { useFormulaInput } from "../../hooks/useFormulaInput";
 
 // ================= STYLES =================
 
@@ -53,14 +52,15 @@ const HiddenInput = styled.input`
 
 // ================= COMPONENT =================
 
-export default function FormulaInput({ value, onChange }) {
-  const {
-    cursorIndex,
-    setCursorIndex,
-    insertToken,
-    removeToken,
-    moveCursorIndex,
-  } = useFormulaInput({ value, onChange });
+export default function FormulaInput({
+  value,
+  onChange,
+  cursorIndex,
+  setCursorIndex,
+  insertToken,
+  removeToken,
+  moveCursorIndex,
+}) {
   const inputRef = useRef(null);
 
   // ========== HELPERS ==========
