@@ -1,14 +1,10 @@
-import { useState } from "react";
 import "./App.css";
-import FormulaInput from "./components/GPTFormulaInput";
+import GPTFormulaBuilder from "./components/GPTFormulaBuilder";
 
 function App() {
-  const [tokens, setTokens] = useState([]);
   return (
     <>
-      <FormulaInput value={tokens} onChange={setTokens} />
-
-      <pre>{JSON.stringify(tokens, null, 2)}</pre>
+      <GPTFormulaBuilder />
     </>
   );
 }
