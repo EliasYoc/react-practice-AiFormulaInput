@@ -95,7 +95,7 @@ const GPTFormulaBuilder = () => {
     if (item.section.kind === "function") {
       const functionTokens = getFunctionTokens(item.value);
       console.log("functionTokens", functionTokens);
-      functionTokens.forEach((token) => insertToken(token));
+      insertToken(functionTokens);
       return;
     }
     insertToken({ type: item.section.kind, value: item.value });

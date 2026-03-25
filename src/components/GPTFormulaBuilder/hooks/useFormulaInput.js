@@ -6,11 +6,16 @@ export function useFormulaInput({ value, onChange }) {
 
   // Usamos useCallback para evitar recrear la función innecesariamente en cada render
   const insertToken = useCallback(
-    (token) => {
-      const newTokens = [...value];
-      newTokens.splice(cursorIndex, 0, token);
+    (tokenOrTokens) => {
+      // Asegurarnos de que siempre sea un array
+      const tokensArray = Array.isArray(tokenOrTokens)
+        ? tokenOrTokens
+        : [tokenOrTokens];
 
-      setCursorIndex(cursorIndex + 1);
+      const newTokens = [...value];
+      // Insertamos todos los tokens de golpe en la posición del cursor
+      newTokens.splice(cursorIndex, 0, ...tokensArray);
+      setCursorIndex(cursorIndex + tokensArray.length);
       onChange(newTokens);
     },
     [value, onChange, cursorIndex],
