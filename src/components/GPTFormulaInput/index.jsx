@@ -83,41 +83,67 @@ export default function FormulaInput({ value, onChange }) {
   // ========== KEYBOARD ==========
 
   const handleKeyDown = (e) => {
+    e.preventDefault();
     if (e.key === "Backspace") {
-      e.preventDefault();
       handleBackspace();
       return;
     }
 
     if (e.key === "ArrowLeft") {
-      e.preventDefault();
       setCursorIndex((i) => Math.max(0, i - 1));
       return;
     }
 
     if (e.key === "ArrowRight") {
-      e.preventDefault();
       setCursorIndex((i) => Math.min(value.length, i + 1));
       return;
     }
     console.log("key", e);
+    console.log("key", e.target.value);
     // números
+    if (e.code === "Space") {
+      insertToken({ type: "space", value: " " });
+      return;
+    }
+
     if (/^[0-9]$/.test(e.key)) {
-      e.preventDefault();
       insertToken({ type: "number", value: e.key });
       return;
     }
 
+    if (/^[a-zA-Z]$/.test(e.key)) {
+      insertToken({ type: "letter", value: e.key });
+      return;
+    }
+
     // operadores simples
-    if (["+", "-", "*", "/"].includes(e.key)) {
-      e.preventDefault();
+    if (
+      [
+        "+",
+        "-",
+        "*",
+        "/",
+        "=",
+        "<",
+        ">",
+        "and",
+        "or",
+        "<=",
+        ">=",
+        "!=",
+      ].includes(e.key)
+    ) {
       insertToken({ type: "operator", value: e.key });
+      return;
+    }
+
+    if ([";"].includes(e.key)) {
+      insertToken({ type: "statement-terminator", value: e.key });
       return;
     }
 
     // paréntesis
     if (["(", ")"].includes(e.key)) {
-      e.preventDefault();
       insertToken({ type: "paren", value: e.key });
       return;
     }
@@ -131,15 +157,23 @@ export default function FormulaInput({ value, onChange }) {
         <React.Fragment key={i}>
           {cursorIndex === i && <Cursor />}
 
-          <TokenBox
-            onClick={(e) => {
-              e.stopPropagation();
-              setCursorIndex(i + 1);
-              focusInput();
-            }}
-          >
-            {token.value}
-          </TokenBox>
+          {token.type === "letter" ||
+          token.type === "space" ||
+          token.type === "number" ? (
+            <span style={{ padding: token.type === "space" ? "0 .2rem" : "" }}>
+              {token.value}
+            </span>
+          ) : (
+            <TokenBox
+              onClick={(e) => {
+                e.stopPropagation();
+                setCursorIndex(i + 1);
+                focusInput();
+              }}
+            >
+              {token.value}
+            </TokenBox>
+          )}
         </React.Fragment>
       ))}
 
