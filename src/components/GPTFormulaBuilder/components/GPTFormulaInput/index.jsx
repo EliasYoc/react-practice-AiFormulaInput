@@ -1,6 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { Box } from "@mui/material";
 import styled from "styled-components";
+import { useFormulaInput } from "../../hooks/useFormulaInput";
 
 // ================= STYLES =================
 
@@ -53,7 +54,13 @@ const HiddenInput = styled.input`
 // ================= COMPONENT =================
 
 export default function FormulaInput({ value, onChange }) {
-  const [cursorIndex, setCursorIndex] = useState(value.length);
+  const {
+    cursorIndex,
+    setCursorIndex,
+    insertToken,
+    removeToken,
+    moveCursorIndex,
+  } = useFormulaInput({ value, onChange });
   const inputRef = useRef(null);
 
   // ========== HELPERS ==========
@@ -62,40 +69,22 @@ export default function FormulaInput({ value, onChange }) {
     inputRef.current?.focus();
   };
 
-  const insertToken = (token) => {
-    const newTokens = [...value];
-    newTokens.splice(cursorIndex, 0, token);
-
-    setCursorIndex(cursorIndex + 1);
-    onChange(newTokens);
-  };
-
-  const handleBackspace = () => {
-    if (cursorIndex === 0) return;
-
-    const newTokens = [...value];
-    newTokens.splice(cursorIndex - 1, 1);
-
-    setCursorIndex(cursorIndex - 1);
-    onChange(newTokens);
-  };
-
   // ========== KEYBOARD ==========
 
   const handleKeyDown = (e) => {
     e.preventDefault();
     if (e.key === "Backspace") {
-      handleBackspace();
+      removeToken();
       return;
     }
 
     if (e.key === "ArrowLeft") {
-      setCursorIndex((i) => Math.max(0, i - 1));
+      moveCursorIndex("left");
       return;
     }
 
     if (e.key === "ArrowRight") {
-      setCursorIndex((i) => Math.min(value.length, i + 1));
+      moveCursorIndex("right");
       return;
     }
     console.log("key", e);
