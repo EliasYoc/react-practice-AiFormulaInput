@@ -61,10 +61,11 @@ export default function FormulaInput({
   insertToken,
   removeToken,
   moveCursorIndex,
+  onClick,
 }) {
   const inputRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
-
+  //mejor obtener el onfocus y onblur como props
   // ========== HELPERS ==========
 
   const focusInput = () => {
@@ -147,8 +148,15 @@ export default function FormulaInput({
   // ========== RENDER ==========
 
   return (
-    <ClickAwayListener onClickAway={handleClickAway}>
-      <Container onClick={focusInput}>
+    <>
+      <Container
+        onClick={(e) => {
+          focusInput();
+          if (onClick) {
+            onClick(e);
+          }
+        }}
+      >
         {value.map((token, i) => (
           <React.Fragment key={i}>
             {cursorIndex === i && isFocused && <Cursor />}
@@ -188,6 +196,6 @@ export default function FormulaInput({
           onBlur={() => setIsFocused(false)}
         />
       </Container>
-    </ClickAwayListener>
+    </>
   );
 }
