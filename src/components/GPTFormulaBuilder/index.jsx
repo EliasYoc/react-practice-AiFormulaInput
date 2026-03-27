@@ -84,7 +84,7 @@ const GPTFormulaBuilder = () => {
   } = useFormulaInput({ value: tokens, onChange: setTokens });
 
   const handlePopoverOpen = (event) => {
-    setPopoverAnchorEl(event.currentTarget);
+    setPopoverAnchorEl(popoverAnchorEl ? null : event.currentTarget);
   };
 
   const handlePopoverClose = () => {
@@ -110,8 +110,9 @@ const GPTFormulaBuilder = () => {
         insertToken={insertToken}
         removeToken={removeToken}
         moveCursorIndex={moveCursorIndex}
+        onClick={handlePopoverOpen}
       />
-      <Button onClick={handlePopoverOpen}>Abrir</Button>
+      {/* <Button >Abrir</Button> */}
 
       <FormulaPopover
         anchorEl={popoverAnchorEl}

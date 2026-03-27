@@ -8,6 +8,9 @@ import {
   Button,
   Typography,
   Stack,
+  Popper,
+  ClickAwayListener,
+  Paper,
 } from "@mui/material";
 import styled from "styled-components";
 import ExpandMoreRounded from "@mui/icons-material/ExpandMoreRounded";
@@ -48,48 +51,44 @@ export default function FormulaPopover({
   };
 
   return (
-    <Popover
-      open={open}
-      anchorEl={anchorEl}
-      onClose={onClose}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "left",
-      }}
-    >
-      <Container>
-        <Header>
-          <Button onClick={handleToggleAll}>
-            {isAllExpanded ? "Colapsar todo" : "Expandir todo"}
-          </Button>
-        </Header>
+    <Popper open={open} anchorEl={anchorEl}>
+      <Paper>
+        <ClickAwayListener onClickAway={onClose}>
+          <Container>
+            <Header>
+              <Button onClick={handleToggleAll}>
+                {isAllExpanded ? "Colapsar todo" : "Expandir todo"}
+              </Button>
+            </Header>
 
-        {sections.map((section) => (
-          <Accordion
-            key={section.id}
-            expanded={expanded.includes(section.id)}
-            onChange={handleChange(section.id)}
-          >
-            <AccordionSummary expandIcon={<ExpandMoreRounded />}>
-              <Typography>{section.title}</Typography>
-            </AccordionSummary>
+            {sections.map((section) => (
+              <Accordion
+                key={section.id}
+                expanded={expanded.includes(section.id)}
+                onChange={handleChange(section.id)}
+              >
+                <AccordionSummary expandIcon={<ExpandMoreRounded />}>
+                  <Typography>{section.title}</Typography>
+                </AccordionSummary>
 
-            <AccordionDetails>
-              <ChipsContainer>
-                <Stack direction="row" flexWrap="wrap" gap={1}>
-                  {section.items.map((item, index) => (
-                    <Chip
-                      key={`${section.id}-${index}`}
-                      label={item}
-                      onClick={() => handleChipClick(item, section)}
-                    />
-                  ))}
-                </Stack>
-              </ChipsContainer>
-            </AccordionDetails>
-          </Accordion>
-        ))}
-      </Container>
-    </Popover>
+                <AccordionDetails>
+                  <ChipsContainer>
+                    <Stack direction="row" flexWrap="wrap" gap={1}>
+                      {section.items.map((item, index) => (
+                        <Chip
+                          key={`${section.id}-${index}`}
+                          label={item}
+                          onClick={() => handleChipClick(item, section)}
+                        />
+                      ))}
+                    </Stack>
+                  </ChipsContainer>
+                </AccordionDetails>
+              </Accordion>
+            ))}
+          </Container>
+        </ClickAwayListener>
+      </Paper>
+    </Popper>
   );
 }
