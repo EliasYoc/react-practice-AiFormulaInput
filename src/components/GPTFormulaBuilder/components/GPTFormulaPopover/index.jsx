@@ -54,7 +54,11 @@ export default function FormulaPopover({
     <Popper open={open} anchorEl={anchorEl}>
       <Paper>
         <ClickAwayListener onClickAway={onClose}>
-          <Container>
+          <Container
+            onClick={(e) => {
+              document.getElementById("hidden-input").focus();
+            }}
+          >
             <Header>
               <Button onClick={handleToggleAll}>
                 {isAllExpanded ? "Colapsar todo" : "Expandir todo"}

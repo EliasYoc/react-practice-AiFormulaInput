@@ -112,7 +112,6 @@ const GPTFormulaBuilder = () => {
         moveCursorIndex={moveCursorIndex}
         onClick={handlePopoverOpen}
       />
-      {/* <Button >Abrir</Button> */}
 
       <FormulaPopover
         anchorEl={popoverAnchorEl}
