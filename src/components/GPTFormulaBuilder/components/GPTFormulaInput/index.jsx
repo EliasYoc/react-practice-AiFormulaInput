@@ -55,13 +55,11 @@ const HiddenInput = styled.input`
 
 export default function FormulaInput({
   value,
-  onChange,
+  // onChange,
   cursorIndex,
   setCursorIndex,
-  insertToken,
-  removeLastToken,
-  moveCursorIndex,
   onClick,
+  handleKeyDown,
 }) {
   const inputRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -74,74 +72,6 @@ export default function FormulaInput({
 
   const handleClickAway = () => {
     inputRef.current && inputRef.current.blur();
-  };
-
-  // ========== KEYBOARD ==========
-
-  const handleKeyDown = (e) => {
-    e.preventDefault();
-    if (e.key === "Backspace") {
-      removeLastToken();
-      return;
-    }
-
-    if (e.key === "ArrowLeft") {
-      moveCursorIndex("left");
-      return;
-    }
-
-    if (e.key === "ArrowRight") {
-      moveCursorIndex("right");
-      return;
-    }
-
-    // números
-    if (e.code === "Space") {
-      insertToken({ type: "space", value: " " });
-      return;
-    }
-
-    if (/^[0-9]$/.test(e.key)) {
-      insertToken({ type: "number", value: e.key });
-      return;
-    }
-
-    if (/^[a-zA-Z]$/.test(e.key)) {
-      insertToken({ type: "letter", value: e.key });
-      return;
-    }
-
-    // operadores simples
-    if (
-      [
-        "+",
-        "-",
-        "*",
-        "/",
-        "=",
-        "<",
-        ">",
-        "and",
-        "or",
-        "<=",
-        ">=",
-        "!=",
-      ].includes(e.key)
-    ) {
-      insertToken({ type: "operator", value: e.key });
-      return;
-    }
-
-    if ([";"].includes(e.key)) {
-      insertToken({ type: "statement-terminator", value: e.key });
-      return;
-    }
-
-    // paréntesis
-    if (["(", ")"].includes(e.key)) {
-      insertToken({ type: "paren", value: e.key });
-      return;
-    }
   };
 
   // ========== RENDER ==========

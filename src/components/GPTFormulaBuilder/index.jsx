@@ -102,6 +102,74 @@ const GPTFormulaBuilder = ({ value, onChange }) => {
     }
     insertToken({ type: item.section.kind, value: item.value });
   };
+
+  // ========== KEYBOARD ==========
+
+  const handleKeyDown = (e) => {
+    e.preventDefault();
+    if (e.key === "Backspace") {
+      removeLastToken();
+      return;
+    }
+
+    if (e.key === "ArrowLeft") {
+      moveCursorIndex("left");
+      return;
+    }
+
+    if (e.key === "ArrowRight") {
+      moveCursorIndex("right");
+      return;
+    }
+
+    // números
+    if (e.code === "Space") {
+      insertToken({ type: "space", value: " " });
+      return;
+    }
+
+    if (/^[0-9]$/.test(e.key)) {
+      insertToken({ type: "number", value: e.key });
+      return;
+    }
+
+    if (/^[a-zA-Z]$/.test(e.key)) {
+      insertToken({ type: "letter", value: e.key });
+      return;
+    }
+
+    // operadores simples
+    if (
+      [
+        "+",
+        "-",
+        "*",
+        "/",
+        "=",
+        "<",
+        ">",
+        "and",
+        "or",
+        "<=",
+        ">=",
+        "!=",
+      ].includes(e.key)
+    ) {
+      insertToken({ type: "operator", value: e.key });
+      return;
+    }
+
+    if ([";"].includes(e.key)) {
+      insertToken({ type: "statement-terminator", value: e.key });
+      return;
+    }
+
+    // paréntesis
+    if (["(", ")"].includes(e.key)) {
+      insertToken({ type: "paren", value: e.key });
+      return;
+    }
+  };
   return (
     <>
       <FormulaInput
@@ -109,10 +177,8 @@ const GPTFormulaBuilder = ({ value, onChange }) => {
         // onChange={onChange}
         cursorIndex={cursorIndex}
         setCursorIndex={setCursorIndex}
-        insertToken={insertToken}
-        removeLastToken={removeLastToken}
-        moveCursorIndex={moveCursorIndex}
         onClick={handlePopoverOpen}
+        handleKeyDown={handleKeyDown}
       />
 
       <Button onClick={() => console.log(clear())}>Clear</Button>
