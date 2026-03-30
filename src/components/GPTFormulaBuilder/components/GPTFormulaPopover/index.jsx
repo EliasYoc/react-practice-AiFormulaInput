@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Accordion,
   AccordionSummary,
@@ -10,13 +10,18 @@ import {
   ClickAwayListener,
   Paper,
   Box,
+  TextField,
 } from "@mui/material";
 import styled from "styled-components";
 import ExpandMoreRounded from "@mui/icons-material/ExpandMoreRounded";
+import { debounce } from "lodash";
 
 const Container = styled.div``;
 
-const Header = styled.div``;
+const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 export default function FormulaPopover({
   anchorEl,
@@ -25,18 +30,49 @@ export default function FormulaPopover({
   sections = [],
   onSelect,
 }) {
-  const [expanded, setExpanded] = useState([]);
+  const allSectionIds = useMemo(() => sections.map((s) => s.id), [sections]);
 
-  const allIds = useMemo(() => sections.map((s) => s.id), [sections]);
+  const [expandedSectionIds, setExpandedSectionsIds] = useState(allSectionIds);
+  const [search, setSearch] = useState("");
+  const [filteredSections, setFilteredSections] = useState([]);
 
-  const isAllExpanded = expanded.length === sections.length;
+  const isAllExpanded = expandedSectionIds.length === sections.length;
+
+  useEffect(() => {
+    const filterSectionsDebounced = debounce(() => {
+      const normalizedSearch = search.trim().toLowerCase();
+
+      if (!normalizedSearch) {
+        setFilteredSections(sections);
+      } else {
+        const filtered = sections
+          .map((section) => {
+            const filteredItems = section.items.filter((item) =>
+              item.toLowerCase().includes(normalizedSearch),
+            );
+
+            return {
+              ...section,
+              items: filteredItems,
+            };
+          })
+          .filter((section) => section.items.length > 0);
+        setFilteredSections(filtered);
+      }
+    }, 450);
+
+    filterSectionsDebounced();
+    return () => {
+      filterSectionsDebounced.cancel();
+    };
+  }, [sections, search]);
 
   const handleToggleAll = () => {
-    setExpanded(isAllExpanded ? [] : allIds);
+    setExpandedSectionsIds(isAllExpanded ? [] : allSectionIds);
   };
 
   const handleChange = (panelId) => (event, isExpanded) => {
-    setExpanded((prev) =>
+    setExpandedSectionsIds((prev) =>
       isExpanded ? [...prev, panelId] : prev.filter((id) => id !== panelId),
     );
   };
@@ -57,15 +93,22 @@ export default function FormulaPopover({
             }}
           >
             <Header>
+              <TextField
+                size="small"
+                placeholder="Buscar variable, función o operador..."
+                onClick={(e) => e.stopPropagation()}
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+              />
               <Button onClick={handleToggleAll}>
                 {isAllExpanded ? "Colapsar todo" : "Expandir todo"}
               </Button>
             </Header>
 
-            {sections.map((section) => (
+            {filteredSections.map((section) => (
               <Accordion
                 key={section.id}
-                expanded={expanded.includes(section.id)}
+                expanded={expandedSectionIds.includes(section.id)}
                 onChange={handleChange(section.id)}
               >
                 <AccordionSummary expandIcon={<ExpandMoreRounded />}>
