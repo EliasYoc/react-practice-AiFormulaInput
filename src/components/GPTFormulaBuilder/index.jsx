@@ -2,7 +2,7 @@ import { useState } from "react";
 import FormulaInput from "./components/GPTFormulaInput";
 import { Button } from "@mui/material";
 import FormulaPopover from "./components/GPTFormulaPopover";
-import { useInputTokens } from "./hooks/useFormulaInput";
+import { useInputTokens } from "./hooks/useInputTokens";
 
 const sectionsData = [
   {
@@ -17,6 +17,7 @@ const sectionsData = [
     kind: "function",
     items: ["if", "sum", "round"],
   },
+  // las siguientes secciones serian dinamicas por lo que deben venir por props
   {
     id: "layout",
     title: "Variables de layout",
@@ -73,7 +74,6 @@ const getFunctionTokens = (functionName) => {
 };
 
 const GPTFormulaBuilder = ({ value, onChange }) => {
-  // const [tokens, setTokens] = useState([]);
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const {
     cursorIndex,

@@ -29,6 +29,8 @@ export function useInputTokens({ tokens, onInsertToken }) {
 
     setCursorIndex(cursorIndex - 1);
     onInsertToken(newTokens);
+
+    return newTokens;
   }, [tokens, onInsertToken, cursorIndex]);
 
   const moveCursorIndex = useCallback(
