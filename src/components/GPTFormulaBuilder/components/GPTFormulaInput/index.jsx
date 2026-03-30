@@ -70,9 +70,9 @@ export default function FormulaInput({
     inputRef.current && inputRef.current.focus();
   };
 
-  const handleClickAway = () => {
-    inputRef.current && inputRef.current.blur();
-  };
+  // const handleClickAway = () => {
+  //   inputRef.current && inputRef.current.blur();
+  // };
 
   // ========== RENDER ==========
 

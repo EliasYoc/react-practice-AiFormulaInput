@@ -53,7 +53,7 @@ const sectionsData = [
   },
 ];
 
-const selectedFunctionToken = {
+const functionTokenDict = {
   if: [
     { type: "function", value: "if(" },
     { type: "statement-terminator", value: ";" },
@@ -72,7 +72,7 @@ const selectedFunctionToken = {
 };
 
 const getFunctionTokens = (functionName) => {
-  return selectedFunctionToken[functionName] || [];
+  return functionTokenDict[functionName] || [];
 };
 
 const GPTFormulaBuilder = ({ value, onChange, tokenPatterns = [] }) => {
@@ -151,11 +151,12 @@ const GPTFormulaBuilder = ({ value, onChange, tokenPatterns = [] }) => {
         "=",
         "<",
         ">",
-        "and",
-        "or",
-        "<=",
-        ">=",
-        "!=",
+        // "and",
+        // "or",
+        // "<=",
+        // ">=",
+        // "!=",
+        "!",
       ].includes(e.key)
     ) {
       insertToken({ type: "operator", value: e.key });

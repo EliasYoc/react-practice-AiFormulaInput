@@ -55,7 +55,7 @@ export default function FormulaPopover({
       <Paper>
         <ClickAwayListener onClickAway={onClose}>
           <Container
-            onClick={(e) => {
+            onClick={() => {
               document.getElementById("hidden-input").focus();
             }}
           >

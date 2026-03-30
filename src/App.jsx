@@ -1,41 +1,6 @@
+import { useState } from "react";
 import "./App.css";
 import GPTFormulaBuilder from "./components/GPTFormulaBuilder";
-import { useEffect, useState } from "react";
-import { transformTokens } from "./components/GPTFormulaBuilder/utils/transformTokens";
-const tokens = [
-  {
-    type: "letter",
-    value: "i",
-  },
-  {
-    type: "letter",
-    value: "f",
-  },
-  {
-    type: "paren",
-    value: "(",
-  },
-  {
-    type: "number",
-    value: "2",
-  },
-  {
-    type: "operator",
-    value: "<",
-  },
-  {
-    type: "operator",
-    value: "=",
-  },
-  {
-    type: "number",
-    value: "2",
-  },
-  {
-    type: "paren",
-    value: ")",
-  },
-];
 
 const patterns = [
   {
@@ -57,6 +22,47 @@ const patterns = [
     result: {
       type: "operator",
       value: "<=",
+    },
+  },
+  {
+    match: [
+      { type: "operator", value: ">" },
+      { type: "operator", value: "=" },
+    ],
+    result: {
+      type: "operator",
+      value: ">=",
+    },
+  },
+  {
+    match: [
+      { type: "operator", value: "!" },
+      { type: "operator", value: "=" },
+    ],
+    result: {
+      type: "operator",
+      value: "!=",
+    },
+  },
+  {
+    match: [
+      { type: "letter", value: "a" },
+      { type: "letter", value: "n" },
+      { type: "letter", value: "d" },
+    ],
+    result: {
+      type: "operator",
+      value: "and",
+    },
+  },
+  {
+    match: [
+      { type: "letter", value: "o" },
+      { type: "letter", value: "r" },
+    ],
+    result: {
+      type: "operator",
+      value: "or",
     },
   },
   {
