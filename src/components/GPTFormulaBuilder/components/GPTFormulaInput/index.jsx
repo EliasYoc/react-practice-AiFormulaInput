@@ -59,7 +59,7 @@ export default function FormulaInput({
   cursorIndex,
   setCursorIndex,
   insertToken,
-  removeToken,
+  removeLastToken,
   moveCursorIndex,
   onClick,
 }) {
@@ -81,7 +81,7 @@ export default function FormulaInput({
   const handleKeyDown = (e) => {
     e.preventDefault();
     if (e.key === "Backspace") {
-      removeToken();
+      removeLastToken();
       return;
     }
 
@@ -94,8 +94,7 @@ export default function FormulaInput({
       moveCursorIndex("right");
       return;
     }
-    console.log("key", e);
-    console.log("key", e.target.value);
+
     // números
     if (e.code === "Space") {
       insertToken({ type: "space", value: " " });

@@ -2,7 +2,7 @@ import { useState } from "react";
 import FormulaInput from "./components/GPTFormulaInput";
 import { Button } from "@mui/material";
 import FormulaPopover from "./components/GPTFormulaPopover";
-import { useFormulaInput } from "./hooks/useFormulaInput";
+import { useInputTokens } from "./hooks/useFormulaInput";
 
 const sectionsData = [
   {
@@ -72,16 +72,17 @@ const getFunctionTokens = (functionName) => {
   return selectedFunctionToken[functionName] || [];
 };
 
-const GPTFormulaBuilder = () => {
-  const [tokens, setTokens] = useState([]);
+const GPTFormulaBuilder = ({ value, onChange }) => {
+  // const [tokens, setTokens] = useState([]);
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const {
     cursorIndex,
     setCursorIndex,
     insertToken,
-    removeToken,
+    removeLastToken,
     moveCursorIndex,
-  } = useFormulaInput({ value: tokens, onChange: setTokens });
+    clear,
+  } = useInputTokens({ tokens: value, onInsertToken: onChange });
 
   const handlePopoverOpen = (event) => {
     setPopoverAnchorEl(popoverAnchorEl ? null : event.currentTarget);
@@ -96,6 +97,7 @@ const GPTFormulaBuilder = () => {
       const functionTokens = getFunctionTokens(item.value);
       console.log("functionTokens", functionTokens);
       insertToken(functionTokens);
+
       return;
     }
     insertToken({ type: item.section.kind, value: item.value });
@@ -103,15 +105,17 @@ const GPTFormulaBuilder = () => {
   return (
     <>
       <FormulaInput
-        value={tokens}
-        onChange={setTokens}
+        value={value}
+        // onChange={onChange}
         cursorIndex={cursorIndex}
         setCursorIndex={setCursorIndex}
         insertToken={insertToken}
-        removeToken={removeToken}
+        removeLastToken={removeLastToken}
         moveCursorIndex={moveCursorIndex}
         onClick={handlePopoverOpen}
       />
+
+      <Button onClick={() => console.log(clear())}>Clear</Button>
 
       <FormulaPopover
         anchorEl={popoverAnchorEl}
@@ -120,7 +124,7 @@ const GPTFormulaBuilder = () => {
         sections={sectionsData}
         onSelect={handlePopoverSelect}
       />
-      <pre>{JSON.stringify(tokens, null, 2)}</pre>
+      <pre>{JSON.stringify(value, null, 2)}</pre>
     </>
   );
 };
