@@ -51,6 +51,14 @@ export function useInputTokens({ tokens, onInsertToken }) {
     return tokens;
   };
 
+  const replaceTokens = useCallback(
+    (newTokens) => {
+      onInsertToken(newTokens);
+      setCursorIndex(newTokens.length);
+    },
+    [onInsertToken],
+  );
+
   // Retornamos todo lo que el componente necesitará
   return {
     cursorIndex,
@@ -59,5 +67,6 @@ export function useInputTokens({ tokens, onInsertToken }) {
     removeLastToken,
     moveCursorIndex,
     clear,
+    replaceTokens,
   };
 }

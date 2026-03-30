@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import FormulaInput from "./components/GPTFormulaInput";
 import { Button } from "@mui/material";
 import FormulaPopover from "./components/GPTFormulaPopover";
 import { useInputTokens } from "./hooks/useInputTokens";
+import { transformTokens } from "./utils/transformTokens";
+import { debounce } from "lodash";
 
 const sectionsData = [
   {
@@ -73,7 +75,7 @@ const getFunctionTokens = (functionName) => {
   return selectedFunctionToken[functionName] || [];
 };
 
-const GPTFormulaBuilder = ({ value, onChange }) => {
+const GPTFormulaBuilder = ({ value, onChange, tokenPatterns = [] }) => {
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const {
     cursorIndex,
@@ -82,6 +84,7 @@ const GPTFormulaBuilder = ({ value, onChange }) => {
     removeLastToken,
     moveCursorIndex,
     clear,
+    replaceTokens,
   } = useInputTokens({ tokens: value, onInsertToken: onChange });
 
   const handlePopoverOpen = (event) => {
@@ -170,6 +173,27 @@ const GPTFormulaBuilder = ({ value, onChange }) => {
       return;
     }
   };
+
+  const transformTokensDebounced = useMemo(() => {
+    return debounce((tokens) => {
+      const transformedTokens = transformTokens(tokens, tokenPatterns);
+      if (transformedTokens.length !== tokens.length) {
+        // para evvitar loop infinito, aunque no se si esté bien corregir que transformTokens devuelva true si hizo match
+        replaceTokens(transformedTokens);
+      }
+      console.log("transformedTokens", transformedTokens);
+    }, 350);
+  }, [tokenPatterns, replaceTokens]);
+
+  useEffect(() => {
+    console.log("effect", value);
+    //este se ejecuta al usar la key y el popper (evitar ejecutarse al seleccionar en popper)
+    transformTokensDebounced(value);
+    return () => {
+      transformTokensDebounced.cancel();
+    };
+  }, [value, transformTokensDebounced]);
+
   return (
     <>
       <FormulaInput
