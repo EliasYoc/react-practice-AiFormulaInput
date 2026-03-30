@@ -1,16 +1,15 @@
 import React, { useState, useMemo } from "react";
 import {
-  Popover,
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Chip,
   Button,
   Typography,
-  Stack,
   Popper,
   ClickAwayListener,
   Paper,
+  Box,
 } from "@mui/material";
 import styled from "styled-components";
 import ExpandMoreRounded from "@mui/icons-material/ExpandMoreRounded";
@@ -18,8 +17,6 @@ import ExpandMoreRounded from "@mui/icons-material/ExpandMoreRounded";
 const Container = styled.div``;
 
 const Header = styled.div``;
-
-const ChipsContainer = styled.div``;
 
 export default function FormulaPopover({
   anchorEl,
@@ -76,17 +73,15 @@ export default function FormulaPopover({
                 </AccordionSummary>
 
                 <AccordionDetails>
-                  <ChipsContainer>
-                    <Stack direction="row" flexWrap="wrap" gap={1}>
-                      {section.items.map((item, index) => (
-                        <Chip
-                          key={`${section.id}-${index}`}
-                          label={item}
-                          onClick={() => handleChipClick(item, section)}
-                        />
-                      ))}
-                    </Stack>
-                  </ChipsContainer>
+                  <Box display="flex" flexWrap="wrap" gap={1}>
+                    {section.items.map((item, index) => (
+                      <Chip
+                        key={`${section.id}-${index}`}
+                        label={item}
+                        onClick={() => handleChipClick(item, section)}
+                      />
+                    ))}
+                  </Box>
                 </AccordionDetails>
               </Accordion>
             ))}

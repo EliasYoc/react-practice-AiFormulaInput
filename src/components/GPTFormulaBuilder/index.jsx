@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import FormulaInput from "./components/GPTFormulaInput";
 import { Button } from "@mui/material";
 import FormulaPopover from "./components/GPTFormulaPopover";

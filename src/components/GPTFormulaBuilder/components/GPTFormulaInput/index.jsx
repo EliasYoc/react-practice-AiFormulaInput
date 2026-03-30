@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Chip, ClickAwayListener } from "@mui/material";
+import { Chip } from "@mui/material";
 import styled from "styled-components";
 
 // ================= STYLES =================
@@ -15,14 +15,6 @@ const Container = styled.div`
   min-height: 40px;
   gap: 2px;
 `;
-
-// const TokenBox = styled.span`
-//   padding: 4px 6px;
-//   margin: 2px;
-//   border-radius: 4px;
-//   background: #eee;
-//   font-size: 14px;
-// `;
 
 const Cursor = styled.span`
   display: inline-block;
@@ -70,61 +62,53 @@ export default function FormulaInput({
     inputRef.current && inputRef.current.focus();
   };
 
-  // const handleClickAway = () => {
-  //   inputRef.current && inputRef.current.blur();
-  // };
-
-  // ========== RENDER ==========
-
   return (
-    <>
-      <Container
-        onClick={(e) => {
-          focusInput();
-          if (onClick) {
-            onClick(e);
-          }
-        }}
-      >
-        {value.map((token, i) => (
-          <React.Fragment key={i}>
-            {cursorIndex === i && isFocused && <Cursor />}
+    <Container
+      onClick={(e) => {
+        focusInput();
+        if (onClick) {
+          onClick(e);
+        }
+      }}
+    >
+      {value.map((token, i) => (
+        <React.Fragment key={i}>
+          {cursorIndex === i && isFocused && <Cursor />}
 
-            {["letter", "space", "number"].includes(token.type) ? (
-              <span
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setCursorIndex(i + 1);
-                  focusInput();
-                }}
-                style={{ padding: token.type === "space" ? "0 .2rem" : "" }}
-              >
-                {token.value}
-              </span>
-            ) : (
-              <Chip
-                size="small"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setCursorIndex(i + 1);
-                  focusInput();
-                }}
-                label={token.value}
-              />
-            )}
-          </React.Fragment>
-        ))}
+          {["letter", "space", "number"].includes(token.type) ? (
+            <span
+              onClick={(e) => {
+                e.stopPropagation();
+                setCursorIndex(i + 1);
+                focusInput();
+              }}
+              style={{ padding: token.type === "space" ? "0 .2rem" : "" }}
+            >
+              {token.value}
+            </span>
+          ) : (
+            <Chip
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation();
+                setCursorIndex(i + 1);
+                focusInput();
+              }}
+              label={token.value}
+            />
+          )}
+        </React.Fragment>
+      ))}
 
-        {cursorIndex === value.length && isFocused && <Cursor />}
+      {cursorIndex === value.length && isFocused && <Cursor />}
 
-        <HiddenInput
-          id="hidden-input"
-          ref={inputRef}
-          onKeyDown={handleKeyDown}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-        />
-      </Container>
-    </>
+      <HiddenInput
+        id="hidden-input"
+        ref={inputRef}
+        onKeyDown={handleKeyDown}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+      />
+    </Container>
   );
 }
