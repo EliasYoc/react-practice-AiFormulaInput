@@ -6,53 +6,6 @@ import { useInputTokens } from "./hooks/useInputTokens";
 import { transformTokens } from "./utils/transformTokens";
 import { debounce } from "lodash";
 
-const sectionsData = [
-  {
-    id: "operators",
-    title: "Operadores",
-    kind: "operator",
-    items: ["+", "-", "*", "/", "<", "<=", "=", ">", ">=", "!=", "and", "or"],
-  },
-  {
-    id: "functions",
-    title: "Funciones",
-    kind: "function",
-    items: ["if", "sum", "round"],
-  },
-  // las siguientes secciones serian dinamicas por lo que deben venir por props
-  {
-    id: "layout",
-    title: "Variables de layout",
-    kind: "layout",
-    items: ["Nombretab.valor factura", "segundatab.monto total por recibir"],
-  },
-  {
-    id: "global",
-    title: "Variables globales",
-    kind: "global",
-    items: [
-      "Saldo insoluto",
-      "Servicio de deuda",
-      "Garantias adicionales",
-      "Reserva efectivo",
-      "Garantias de maquinaria",
-      "Saldo Garantias de inmuebles",
-    ],
-  },
-  {
-    id: "section",
-    title: "Sección",
-    kind: "section",
-    items: [
-      "variable_name",
-      "variable_name",
-      "variable_name",
-      "variable_name",
-      "variable_name",
-    ],
-  },
-];
-
 const functionTokenDict = {
   if: [
     { type: "function", value: "if(" },
@@ -75,7 +28,12 @@ const getFunctionTokens = (functionName) => {
   return functionTokenDict[functionName] || [];
 };
 
-const GPTFormulaBuilder = ({ value, onChange, tokenPatterns = [] }) => {
+const GPTFormulaBuilder = ({
+  value,
+  onChange,
+  tokenPatterns = [],
+  sectionsData,
+}) => {
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const {
     cursorIndex,
