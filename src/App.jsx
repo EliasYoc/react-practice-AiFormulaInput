@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import GPTFormulaBuilder from "./components/GPTFormulaBuilder";
+import { Chip } from "@mui/material";
 
 const patterns = [
   {
@@ -98,26 +99,26 @@ const sectionsData = [
     id: "operators",
     title: "Operadores",
     kind: "operator",
-    items: ["+", "-", "*", "/", "<", "<=", "=", ">", ">=", "!=", "and", "or"],
+    labels: ["+", "-", "*", "/", "<", "<=", "=", ">", ">=", "!=", "and", "or"],
   },
   {
     id: "functions",
     title: "Funciones",
     kind: "function",
-    items: ["if", "sum", "round"],
+    labels: ["if", "sum", "round"],
   },
   // las siguientes secciones serian dinamicas por lo que deben venir por props
   {
     id: "layout",
     title: "Variables de layout",
     kind: "layout",
-    items: ["Nombretab.valor factura", "segundatab.monto total por recibir"],
+    labels: ["Nombretab.valor factura", "segundatab.monto total por recibir"],
   },
   {
     id: "global",
     title: "Variables globales",
     kind: "global",
-    items: [
+    labels: [
       "Saldo insoluto",
       "Servicio de deuda",
       "Garantias adicionales",
@@ -130,7 +131,7 @@ const sectionsData = [
     id: "section",
     title: "Sección",
     kind: "section",
-    items: [
+    labels: [
       "variable_name",
       "variable_name",
       "variable_name",
@@ -180,6 +181,9 @@ function App() {
 
             return functionTokens;
           }
+        }}
+        renderOption={(option) => {
+          return <Chip label={option.label} />;
         }}
       />
       <input type="text" placeholder="input para probar tab" />

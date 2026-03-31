@@ -13,6 +13,7 @@ const GPTFormulaBuilder = ({
   tokenPatterns = [],
   sectionsData,
   formatSelectedToken,
+  renderOption,
 }) => {
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const {
@@ -134,6 +135,7 @@ const GPTFormulaBuilder = ({
         onClose={handlePopoverClose}
         sections={sectionsData}
         onSelect={handlePopoverSelect}
+        renderOption={renderOption}
       />
       <pre>{JSON.stringify(value, null, 2)}</pre>
     </>

@@ -24,6 +24,15 @@ const Container = styled.div`
   position: relative;
 `;
 
+const List = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 0.3rem;
+`;
+
 const Header = styled.div`
   display: flex;
   flex-direction: column;
@@ -39,6 +48,7 @@ export default function FormulaPopover({
   onClose,
   sections = [],
   onSelect,
+  renderOption,
 }) {
   const allSectionIds = useMemo(() => sections.map((s) => s.id), [sections]);
 
@@ -138,15 +148,20 @@ export default function FormulaPopover({
                     </AccordionSummary>
 
                     <AccordionDetails>
-                      <Box display="flex" flexWrap="wrap" gap={1}>
-                        {section.items.map((item, index) => (
-                          <Chip
-                            key={`${section.id}-${index}`}
-                            label={item}
-                            onClick={() => handleChipClick(item, section)}
-                          />
+                      <List>
+                        {section.labels.map((label, sectionIndex) => (
+                          <li
+                            key={`${section.id}-${sectionIndex}`}
+                            onClick={() => handleChipClick(label, section)}
+                          >
+                            {renderOption ? (
+                              renderOption({ label, section })
+                            ) : (
+                              <Chip label={label} />
+                            )}
+                          </li>
                         ))}
-                      </Box>
+                      </List>
                     </AccordionDetails>
                   </Accordion>
                 ))}
