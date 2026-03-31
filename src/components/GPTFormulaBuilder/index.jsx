@@ -188,9 +188,8 @@ const GPTFormulaBuilder = ({ value, onChange, tokenPatterns = [] }) => {
         setCursorIndex={setCursorIndex}
         onClick={handlePopoverOpen}
         handleKeyDown={handleKeyDown}
+        onClickClear={() => clear()}
       />
-
-      <Button onClick={() => console.log(clear())}>Clear</Button>
 
       <FormulaPopover
         anchorEl={popoverAnchorEl}
