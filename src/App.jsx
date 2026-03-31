@@ -98,11 +98,13 @@ function App() {
 
   return (
     <>
+      <input type="text" placeholder="input para probar tab" />
       <GPTFormulaBuilder
         value={value}
         onChange={setValue}
         tokenPatterns={patterns}
       />
+      <input type="text" placeholder="input para probar tab" />
     </>
   );
 }
