@@ -139,6 +139,29 @@ const sectionsData = [
     ],
   },
 ];
+
+const functionTokenDict = {
+  if: [
+    { type: "function", value: "if(" },
+    { type: "statement-terminator", value: ";" },
+    { type: "statement-terminator", value: ";" },
+    { type: "paren", value: ")" },
+  ],
+  sum: [
+    { type: "function", value: "sum(" },
+    { type: "statement-terminator", value: ";" },
+    { type: "paren", value: ")" },
+  ],
+  round: [
+    { type: "function", value: "round(" },
+    { type: "paren", value: ")" },
+  ],
+};
+
+const getFunctionTokens = (functionName) => {
+  return functionTokenDict[functionName] || [];
+};
+
 function App() {
   const [value, setValue] = useState([]);
 
@@ -150,6 +173,14 @@ function App() {
         onChange={setValue}
         sectionsData={sectionsData}
         tokenPatterns={patterns}
+        formatSelectedToken={(tokenItem) => {
+          if (tokenItem.section.kind === "function") {
+            const functionTokens = getFunctionTokens(tokenItem.value);
+            console.log("functionTokens", functionTokens);
+
+            return functionTokens;
+          }
+        }}
       />
       <input type="text" placeholder="input para probar tab" />
     </>

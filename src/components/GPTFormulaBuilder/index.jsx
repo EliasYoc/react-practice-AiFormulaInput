@@ -5,34 +5,14 @@ import FormulaPopover from "./components/GPTFormulaPopover";
 import { useInputTokens } from "./hooks/useInputTokens";
 import { transformTokens } from "./utils/transformTokens";
 import { debounce } from "lodash";
-
-const functionTokenDict = {
-  if: [
-    { type: "function", value: "if(" },
-    { type: "statement-terminator", value: ";" },
-    { type: "statement-terminator", value: ";" },
-    { type: "paren", value: ")" },
-  ],
-  sum: [
-    { type: "function", value: "sum(" },
-    { type: "statement-terminator", value: ";" },
-    { type: "paren", value: ")" },
-  ],
-  round: [
-    { type: "function", value: "round(" },
-    { type: "paren", value: ")" },
-  ],
-};
-
-const getFunctionTokens = (functionName) => {
-  return functionTokenDict[functionName] || [];
-};
-
+//un token abarca un caracter individual dentro del input y si das formato el token puede abarcar mas de un caracter
+//el nombre "opcion" se refiere al item que se ubica en el menu que se divide en secciones, al seleccionar se agrega el token al input. Por lo tanto puede haber muchas opciones en las secciones
 const GPTFormulaBuilder = ({
   value,
   onChange,
   tokenPatterns = [],
   sectionsData,
+  formatSelectedToken,
 }) => {
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const {
@@ -54,13 +34,13 @@ const GPTFormulaBuilder = ({
   };
 
   const handlePopoverSelect = (item) => {
-    if (item.section.kind === "function") {
-      const functionTokens = getFunctionTokens(item.value);
-      console.log("functionTokens", functionTokens);
-      insertToken(functionTokens);
-
+    if (formatSelectedToken) {
+      const token = formatSelectedToken(item);
+      //si el token es undefinde entonces instertará el token por defecto
+      insertToken(token || { type: item.section.kind, value: item.value });
       return;
     }
+
     insertToken({ type: item.section.kind, value: item.value });
   };
 
