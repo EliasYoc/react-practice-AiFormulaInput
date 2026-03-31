@@ -109,7 +109,6 @@ const GPTFormulaBuilder = ({ value, onChange, tokenPatterns = [] }) => {
   // ========== KEYBOARD ==========
 
   const handleKeyDown = (e) => {
-    e.preventDefault();
     if (e.key === "Backspace") {
       removeLastToken();
       return;
@@ -181,6 +180,7 @@ const GPTFormulaBuilder = ({ value, onChange, tokenPatterns = [] }) => {
 
   return (
     <>
+      <input type="text" />
       <FormulaInput
         value={value}
         // onChange={onChange}
@@ -190,6 +190,7 @@ const GPTFormulaBuilder = ({ value, onChange, tokenPatterns = [] }) => {
         handleKeyDown={handleKeyDown}
         onClickClear={() => clear()}
       />
+      <input type="text" />
 
       <FormulaPopover
         anchorEl={popoverAnchorEl}

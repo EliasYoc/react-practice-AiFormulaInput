@@ -7,10 +7,14 @@ import { ClearRounded } from "@mui/icons-material";
 
 const Container = styled.div`
   display: flex;
+  position: relative;
   border: 1px solid #ccc;
   border-radius: 6px;
   justify-content: space-between;
   align-items: center;
+  &:focus-within {
+    outline: 2px solid #000;
+  }
 `;
 
 const InputContainer = styled.div`
@@ -48,7 +52,10 @@ const Cursor = styled.span`
 const HiddenInput = styled.input`
   position: absolute;
   opacity: 0;
-  pointer-events: none;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
 `;
 
 // ================= COMPONENT =================
