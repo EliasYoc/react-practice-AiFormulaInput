@@ -142,23 +142,7 @@ const GPTFormulaBuilder = ({ value, onChange, tokenPatterns = [] }) => {
     }
 
     // operadores simples
-    if (
-      [
-        "+",
-        "-",
-        "*",
-        "/",
-        "=",
-        "<",
-        ">",
-        // "and",
-        // "or",
-        // "<=",
-        // ">=",
-        // "!=",
-        "!",
-      ].includes(e.key)
-    ) {
+    if (["+", "-", "*", "/", "=", "<", ">", "!"].includes(e.key)) {
       insertToken({ type: "operator", value: e.key });
       return;
     }

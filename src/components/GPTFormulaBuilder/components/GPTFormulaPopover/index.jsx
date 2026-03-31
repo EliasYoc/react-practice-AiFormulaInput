@@ -11,16 +11,26 @@ import {
   Paper,
   Box,
   TextField,
+  Fade,
+  Grow,
 } from "@mui/material";
 import styled from "styled-components";
 import ExpandMoreRounded from "@mui/icons-material/ExpandMoreRounded";
 import { debounce } from "lodash";
 
-const Container = styled.div``;
+const Container = styled.div`
+  max-height: 480px;
+  overflow-y: auto;
+  position: relative;
+`;
 
 const Header = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 0.2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 `;
 
 export default function FormulaPopover({
@@ -84,53 +94,67 @@ export default function FormulaPopover({
   };
 
   return (
-    <Popper open={open} anchorEl={anchorEl}>
-      <Paper>
-        <ClickAwayListener onClickAway={onClose}>
-          <Container
-            onClick={() => {
-              document.getElementById("hidden-input").focus();
-            }}
-          >
-            <Header>
-              <TextField
-                size="small"
-                placeholder="Buscar variable, función o operador..."
-                onClick={(e) => e.stopPropagation()}
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-              />
-              <Button onClick={handleToggleAll}>
-                {isAllExpanded ? "Colapsar todo" : "Expandir todo"}
-              </Button>
-            </Header>
-
-            {filteredSections.map((section) => (
-              <Accordion
-                key={section.id}
-                expanded={expandedSectionIds.includes(section.id)}
-                onChange={handleChange(section.id)}
+    <Popper
+      open={open}
+      anchorEl={anchorEl}
+      transition
+      style={{ maxWidth: "600px" }}
+    >
+      {({ TransitionProps }) => (
+        <Grow
+          {...TransitionProps}
+          timeout={250}
+          style={{ transformOrigin: "0 0 0" }}
+        >
+          <Paper>
+            <ClickAwayListener onClickAway={onClose}>
+              <Container
+                onClick={() => {
+                  document.getElementById("hidden-input").focus();
+                }}
               >
-                <AccordionSummary expandIcon={<ExpandMoreRounded />}>
-                  <Typography>{section.title}</Typography>
-                </AccordionSummary>
+                <Header>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    placeholder="Buscar variable, función o operador..."
+                    onClick={(e) => e.stopPropagation()}
+                    value={search}
+                    onChange={(event) => setSearch(event.target.value)}
+                  />
+                </Header>
+                <Button fullWidth onClick={handleToggleAll}>
+                  {isAllExpanded ? "Colapsar todo" : "Expandir todo"}
+                </Button>
 
-                <AccordionDetails>
-                  <Box display="flex" flexWrap="wrap" gap={1}>
-                    {section.items.map((item, index) => (
-                      <Chip
-                        key={`${section.id}-${index}`}
-                        label={item}
-                        onClick={() => handleChipClick(item, section)}
-                      />
-                    ))}
-                  </Box>
-                </AccordionDetails>
-              </Accordion>
-            ))}
-          </Container>
-        </ClickAwayListener>
-      </Paper>
+                {filteredSections.map((section) => (
+                  <Accordion
+                    key={section.id}
+                    expanded={expandedSectionIds.includes(section.id)}
+                    onChange={handleChange(section.id)}
+                  >
+                    <AccordionSummary expandIcon={<ExpandMoreRounded />}>
+                      <Typography>{section.title}</Typography>
+                    </AccordionSummary>
+
+                    <AccordionDetails>
+                      <Box display="flex" flexWrap="wrap" gap={1}>
+                        {section.items.map((item, index) => (
+                          <Chip
+                            key={`${section.id}-${index}`}
+                            label={item}
+                            onClick={() => handleChipClick(item, section)}
+                          />
+                        ))}
+                      </Box>
+                    </AccordionDetails>
+                  </Accordion>
+                ))}
+              </Container>
+            </ClickAwayListener>
+          </Paper>
+        </Grow>
+      )}
     </Popper>
   );
 }
