@@ -185,6 +185,9 @@ function App() {
         renderOption={(option) => {
           return <Chip label={option.label} />;
         }}
+        renderOptionToken={(token) => {
+          return <Chip size="small" label={token.value} />;
+        }}
       />
       <input type="text" placeholder="input para probar tab" />
     </>

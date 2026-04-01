@@ -25,7 +25,7 @@ const InputContainer = styled.div`
   padding: 8px;
   cursor: text;
   min-height: 40px;
-  gap: 2px;
+  gap: 1px;
 `;
 
 const Cursor = styled.span`
@@ -68,6 +68,7 @@ export default function FormulaInput({
   onClick,
   handleKeyDown,
   onClickClear,
+  renderOptionToken,
 }) {
   const inputRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -88,34 +89,36 @@ export default function FormulaInput({
           }
         }}
       >
-        {value.map((token, i) => (
-          <React.Fragment key={i}>
-            {cursorIndex === i && isFocused && <Cursor />}
-
-            {["letter", "space", "number"].includes(token.type) ? (
+        {value.map((token, i) => {
+          const handleClick = (e) => {
+            e.stopPropagation();
+            setCursorIndex(i + 1);
+            focusInput();
+          };
+          let inputToken;
+          if (["letter", "space", "number"].includes(token.type)) {
+            inputToken = (
               <span
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setCursorIndex(i + 1);
-                  focusInput();
-                }}
+                onClick={handleClick}
                 style={{ padding: token.type === "space" ? "0 .2rem" : "" }}
               >
                 {token.value}
               </span>
+            );
+          } else {
+            inputToken = renderOptionToken ? (
+              <div onClick={handleClick}>{renderOptionToken(token)}</div>
             ) : (
-              <Chip
-                size="small"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setCursorIndex(i + 1);
-                  focusInput();
-                }}
-                label={token.value}
-              />
-            )}
-          </React.Fragment>
-        ))}
+              <Chip size="small" onClick={handleClick} label={token.value} />
+            );
+          }
+          return (
+            <React.Fragment key={i}>
+              {cursorIndex === i && isFocused && <Cursor />}
+              {inputToken}
+            </React.Fragment>
+          );
+        })}
 
         {cursorIndex === value.length && isFocused && <Cursor />}
 
