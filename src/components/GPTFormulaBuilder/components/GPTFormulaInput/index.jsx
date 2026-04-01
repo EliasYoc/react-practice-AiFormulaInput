@@ -139,10 +139,12 @@ export default function FormulaInput({
 
         <HiddenInput
           id="hidden-input"
+          value=""
           ref={inputRef}
           onKeyDown={handleKeyDown}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          spellCheck={false}
         />
       </InputContainer>
 
