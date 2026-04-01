@@ -84,7 +84,7 @@ export default function FormulaPopover({
       open={open}
       anchorEl={anchorEl}
       transition
-      style={{ maxWidth: "600px" }}
+      style={{ width: "100%" }}
     >
       {({ TransitionProps }) => (
         <Grow
