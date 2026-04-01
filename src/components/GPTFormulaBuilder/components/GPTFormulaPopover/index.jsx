@@ -43,16 +43,16 @@ export default function FormulaPopover({
       } else {
         const filtered = sections
           .map((section) => {
-            const filteredItems = section.items.filter((item) =>
+            const filteredLabels = section.labels.filter((item) =>
               item.toLowerCase().includes(normalizedSearch),
             );
 
             return {
               ...section,
-              items: filteredItems,
+              labels: filteredLabels,
             };
           })
-          .filter((section) => section.items.length > 0);
+          .filter((section) => section.labels.length > 0);
         setFilteredSections(filtered);
       }
     }, 450);
