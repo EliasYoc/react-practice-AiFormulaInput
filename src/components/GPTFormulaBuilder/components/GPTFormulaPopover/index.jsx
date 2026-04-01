@@ -14,33 +14,9 @@ import {
   Fade,
   Grow,
 } from "@mui/material";
-import styled from "styled-components";
 import ExpandMoreRounded from "@mui/icons-material/ExpandMoreRounded";
 import { debounce } from "lodash";
-
-const Container = styled.div`
-  max-height: 480px;
-  overflow-y: auto;
-  position: relative;
-`;
-
-const List = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  gap: 0.3rem;
-`;
-
-const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 0.2rem;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-`;
+import { Container, List, Header } from "./styles";
 
 export default function FormulaPopover({
   anchorEl,
@@ -125,6 +101,7 @@ export default function FormulaPopover({
               >
                 <Header>
                   <TextField
+                    variant="outlined"
                     fullWidth
                     size="small"
                     placeholder="Buscar variable, función o operador..."
