@@ -170,6 +170,8 @@ function App() {
     <>
       <input type="text" placeholder="input para probar tab" />
       <GPTFormulaBuilder
+        fullWidth
+        placeholder="Escribe una formula"
         value={value}
         onChange={setValue}
         sectionsData={sectionsData}

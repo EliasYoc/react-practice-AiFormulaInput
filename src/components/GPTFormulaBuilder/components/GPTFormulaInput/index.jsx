@@ -1,19 +1,28 @@
 import React, { useRef, useState } from "react";
 import { Chip, IconButton } from "@mui/material";
 import { ClearRounded } from "@mui/icons-material";
-import { Container, InputContainer, Cursor, HiddenInput } from "./styles";
+import {
+  Container,
+  InputContainer,
+  Cursor,
+  HiddenInput,
+  PlaceholderText,
+} from "./styles";
 
 // ================= COMPONENT =================
 
 export default function FormulaInput({
   value,
-  // onChange,
   cursorIndex,
   setCursorIndex,
   onClick,
   handleKeyDown,
   onClickClear,
   renderOptionToken,
+  fullWidth,
+  size,
+  disabled,
+  placeholder,
 }) {
   const inputRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -25,7 +34,7 @@ export default function FormulaInput({
   };
 
   return (
-    <Container>
+    <Container $fullWidth={fullWidth} $size={size} $disabled={disabled}>
       <InputContainer
         onClick={(e) => {
           focusInput();
@@ -34,6 +43,8 @@ export default function FormulaInput({
           }
         }}
       >
+        {value.length === 0 && <PlaceholderText>{placeholder}</PlaceholderText>}
+
         {value.map((token, i) => {
           const handleClick = (e) => {
             e.stopPropagation();
@@ -72,6 +83,7 @@ export default function FormulaInput({
               />
             );
           }
+
           return (
             <React.Fragment key={i}>
               {cursorIndex === i && isFocused && <Cursor />}

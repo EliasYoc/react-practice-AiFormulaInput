@@ -15,6 +15,10 @@ const GPTFormulaBuilder = ({
   formatSelectedToken,
   renderOption,
   renderOptionToken,
+  fullWidth,
+  size,
+  disabled,
+  placeholder,
 }) => {
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const {
@@ -122,13 +126,16 @@ const GPTFormulaBuilder = ({
     <>
       <FormulaInput
         value={value}
-        // onChange={onChange}
         cursorIndex={cursorIndex}
         setCursorIndex={setCursorIndex}
         onClick={handlePopoverOpen}
         handleKeyDown={handleKeyDown}
         onClickClear={() => clear()}
         renderOptionToken={renderOptionToken}
+        fullWidth={fullWidth}
+        size={size}
+        disabled={disabled}
+        placeholder={placeholder}
       />
 
       <FormulaPopover
