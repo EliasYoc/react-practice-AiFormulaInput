@@ -19,6 +19,7 @@ const GPTFormulaBuilder = ({
   size,
   disabled,
   placeholder,
+  allowedTokenKeys,
 }) => {
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const {
@@ -84,21 +85,21 @@ const GPTFormulaBuilder = ({
       return;
     }
 
-    // operadores simples
-    if (["+", "-", "*", "/", "=", "<", ">", "!"].includes(e.key)) {
-      insertToken({ type: "operator", value: e.key });
-      return;
-    }
+    if (allowedTokenKeys) {
+      const rule = allowedTokenKeys.find((binding) => {
+        if (binding.keys && binding.keys.includes(e.key)) {
+          return true;
+        }
 
-    if ([";"].includes(e.key)) {
-      insertToken({ type: "statement-terminator", value: e.key });
-      return;
-    }
-
-    // paréntesis
-    if (["(", ")"].includes(e.key)) {
-      insertToken({ type: "paren", value: e.key });
-      return;
+        if (binding.regex && binding.regex.test(e.key)) {
+          return true;
+        }
+        return false;
+      });
+      if (rule) {
+        insertToken({ type: rule.type, value: e.key });
+        return;
+      }
     }
   };
 

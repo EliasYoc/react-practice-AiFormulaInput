@@ -141,6 +141,7 @@ const sectionsData = [
   },
 ];
 
+//hay una forma de no usar type?
 const functionTokenDict = {
   if: [
     { type: "function", value: "if(" },
@@ -190,10 +191,16 @@ function App() {
         renderOptionToken={(token) => {
           return <Chip size="small" label={token.value} />;
         }}
+        allowedTokenKeys={[
+          { regex: /[+\-*/=<>!]/, type: "operator" },
+          { keys: [";"], type: "statement-terminator" },
+          { keys: ["(", ")"], type: "parenthesis" },
+          { keys: ["``"], type: "backtick" },
+          //aqui existe type parenthesis, pero en el dict de funciones existe type paren, hay que unificar. Tal vez inutilizar type de patterns
+        ]}
       />
       <input type="text" placeholder="input para probar tab" />
     </>
   );
 }
-
 export default App;
