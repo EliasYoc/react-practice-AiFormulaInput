@@ -95,21 +95,36 @@ export default function FormulaInput({
             setCursorIndex(i + 1);
             focusInput();
           };
+
+          const defaultTokenStyle = {
+            position: "relative",
+            zIndex: 1,
+          };
           let inputToken;
           if (["letter", "space", "number"].includes(token.type)) {
             inputToken = (
               <span
                 onClick={handleClick}
-                style={{ padding: token.type === "space" ? "0 .2rem" : "" }}
+                style={{
+                  ...defaultTokenStyle,
+                  padding: token.type === "space" ? "0 .2rem" : "",
+                }}
               >
                 {token.value}
               </span>
             );
           } else {
             inputToken = renderOptionToken ? (
-              <div onClick={handleClick}>{renderOptionToken(token)}</div>
+              <div style={defaultTokenStyle} onClick={handleClick}>
+                {renderOptionToken(token)}
+              </div>
             ) : (
-              <Chip size="small" onClick={handleClick} label={token.value} />
+              <Chip
+                style={defaultTokenStyle}
+                size="small"
+                onClick={handleClick}
+                label={token.value}
+              />
             );
           }
           return (
