@@ -1,5 +1,4 @@
 function matches(tokens, startIndex, patternValues) {
-  console.log("pattern every a", patternValues);
   return patternValues.every((expected, offset) => {
     const token = tokens[startIndex + offset];
 

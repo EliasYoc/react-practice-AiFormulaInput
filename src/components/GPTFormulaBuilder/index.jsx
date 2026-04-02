@@ -131,7 +131,7 @@ const GPTFormulaBuilder = ({
         replaceTokens(transformedTokens);
       }
       console.log("transformedTokens", transformedTokens);
-    }, 350);
+    }, 600);
   }, [tokenPatterns, replaceTokens]);
 
   useEffect(() => {
