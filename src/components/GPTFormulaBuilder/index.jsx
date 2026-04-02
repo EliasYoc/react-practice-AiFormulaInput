@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import FormulaInput from "./components/GPTFormulaInput";
-import { Button } from "@mui/material";
 import FormulaPopover from "./components/GPTFormulaPopover";
 import { useInputTokens } from "./hooks/useInputTokens";
 import { transformTokens } from "./utils/transformTokens";
@@ -55,30 +54,28 @@ const GPTFormulaBuilder = ({
     setPopoverAnchorEl(null);
   };
 
-  const handlePopoverSelect = (item) => {
-    console.log("select item", item);
+  const handlePopoverSelect = (option) => {
+    console.log("select option", option);
     if (formatSelectedToken) {
-      const tokenValues = formatSelectedToken(item);
+      const tokenValues = formatSelectedToken(option);
 
       const tokens =
         tokenValues &&
-        tokenValues.map((tokenValue) => {
-          const allowedTokenRule = getAllowedTokenRule(
-            tokenValue,
-            allowedTokenKeys,
-          );
-          const tokenType = allowedTokenRule && allowedTokenRule.type;
+        tokenValues.map((value) => {
+          const allowedTokenRule = getAllowedTokenRule(value, allowedTokenKeys);
+          const allowedTokenType = allowedTokenRule && allowedTokenRule.type;
+          const type = allowedTokenType || option.section.kind;
           return {
-            type: tokenType || item.section.kind,
-            value: tokenValue,
+            type,
+            value,
           };
         });
       //si el token es undefinde entonces instertará el token por defecto
-      insertToken(tokens || { type: item.section.kind, value: item.value });
+      insertToken(tokens || { type: option.section.kind, value: option.value });
       return;
     }
 
-    insertToken({ type: item.section.kind, value: item.value });
+    insertToken({ type: option.section.kind, value: option.value });
   };
 
   // ========== KEYBOARD ==========
@@ -125,12 +122,12 @@ const GPTFormulaBuilder = ({
 
   const transformTokensDebounced = useMemo(() => {
     return debounce((tokens) => {
-      const transformedTokens = transformTokens(tokens, tokenPatterns);
-      if (transformedTokens.length !== tokens.length) {
-        // para evvitar loop infinito, aunque no se si esté bien corregir que transformTokens devuelva true si hizo match
-        replaceTokens(transformedTokens);
-      }
-      console.log("transformedTokens", transformedTokens);
+      const newTransformedTokens = transformTokens(tokens, tokenPatterns);
+      const areTokensTransformed =
+        newTransformedTokens.length !== tokens.length;
+
+      if (areTokensTransformed) replaceTokens(newTransformedTokens);
+      console.log("transformedTokens", newTransformedTokens);
     }, 600);
   }, [tokenPatterns, replaceTokens]);
 
