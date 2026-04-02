@@ -141,23 +141,10 @@ const sectionsData = [
   },
 ];
 
-//hay una forma de no usar type?
 const functionTokenDict = {
-  if: [
-    { type: "function", value: "if(" },
-    { type: "statement-terminator", value: ";" },
-    { type: "statement-terminator", value: ";" },
-    { type: "paren", value: ")" },
-  ],
-  sum: [
-    { type: "function", value: "sum(" },
-    { type: "statement-terminator", value: ";" },
-    { type: "paren", value: ")" },
-  ],
-  round: [
-    { type: "function", value: "round(" },
-    { type: "paren", value: ")" },
-  ],
+  if: ["if(", ";", ";", ")"],
+  sum: ["sum(", ";", ")"],
+  round: ["round(", ")"],
 };
 
 const getFunctionTokens = (functionName) => {

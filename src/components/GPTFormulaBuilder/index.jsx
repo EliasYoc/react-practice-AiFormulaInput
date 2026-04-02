@@ -5,6 +5,21 @@ import FormulaPopover from "./components/GPTFormulaPopover";
 import { useInputTokens } from "./hooks/useInputTokens";
 import { transformTokens } from "./utils/transformTokens";
 import { debounce } from "lodash";
+const getAllowedTokenRule = (value, allowedTokens) => {
+  if (allowedTokens && allowedTokens.length > 0) {
+    const foundTokenRule = allowedTokens.find((tokenRule) => {
+      if (tokenRule.keys && tokenRule.keys.includes(value)) {
+        return true;
+      }
+
+      if (tokenRule.regex && tokenRule.regex.test(value)) {
+        return true;
+      }
+      return false;
+    });
+    return foundTokenRule;
+  }
+};
 //un token abarca un caracter individual dentro del input y si das formato el token puede abarcar mas de un caracter
 //el nombre "opcion" se refiere al item que se ubica en el menu que se divide en secciones, al seleccionar se agrega el token al input. Por lo tanto puede haber muchas opciones en las secciones
 const GPTFormulaBuilder = ({
@@ -41,10 +56,25 @@ const GPTFormulaBuilder = ({
   };
 
   const handlePopoverSelect = (item) => {
+    console.log("select item", item);
     if (formatSelectedToken) {
-      const token = formatSelectedToken(item);
+      const tokenValues = formatSelectedToken(item);
+
+      const tokens =
+        tokenValues &&
+        tokenValues.map((tokenValue) => {
+          const allowedTokenRule = getAllowedTokenRule(
+            tokenValue,
+            allowedTokenKeys,
+          );
+          const tokenType = allowedTokenRule && allowedTokenRule.type;
+          return {
+            type: tokenType || item.section.kind,
+            value: tokenValue,
+          };
+        });
       //si el token es undefinde entonces instertará el token por defecto
-      insertToken(token || { type: item.section.kind, value: item.value });
+      insertToken(tokens || { type: item.section.kind, value: item.value });
       return;
     }
 
@@ -85,21 +115,11 @@ const GPTFormulaBuilder = ({
       return;
     }
 
-    if (allowedTokenKeys) {
-      const rule = allowedTokenKeys.find((binding) => {
-        if (binding.keys && binding.keys.includes(e.key)) {
-          return true;
-        }
-
-        if (binding.regex && binding.regex.test(e.key)) {
-          return true;
-        }
-        return false;
-      });
-      if (rule) {
-        insertToken({ type: rule.type, value: e.key });
-        return;
-      }
+    const allowedTokenRule = getAllowedTokenRule(e.key, allowedTokenKeys);
+    console.log("allowedTokenRule", allowedTokenRule);
+    if (allowedTokenRule) {
+      insertToken({ type: allowedTokenRule.type, value: e.key });
+      return;
     }
   };
 
