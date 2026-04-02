@@ -5,88 +5,56 @@ import { Chip } from "@mui/material";
 
 const patterns = [
   {
-    match: [
-      { type: "letter", value: "i" },
-      { type: "letter", value: "f" },
-      { type: "paren", value: "(" },
-    ],
+    match: ["i", "f", "("],
     result: {
       type: "function",
       value: "if(",
     },
   },
   {
-    match: [
-      { type: "operator", value: "<" },
-      { type: "operator", value: "=" },
-    ],
+    match: ["<", "="],
     result: {
       type: "operator",
       value: "<=",
     },
   },
   {
-    match: [
-      { type: "operator", value: ">" },
-      { type: "operator", value: "=" },
-    ],
+    match: [">", "="],
     result: {
       type: "operator",
       value: ">=",
     },
   },
   {
-    match: [
-      { type: "operator", value: "!" },
-      { type: "operator", value: "=" },
-    ],
+    match: ["!", "="],
     result: {
       type: "operator",
       value: "!=",
     },
   },
   {
-    match: [
-      { type: "letter", value: "a" },
-      { type: "letter", value: "n" },
-      { type: "letter", value: "d" },
-    ],
+    match: ["a", "n", "d"],
     result: {
       type: "operator",
       value: "and",
     },
   },
   {
-    match: [
-      { type: "letter", value: "o" },
-      { type: "letter", value: "r" },
-    ],
+    match: ["o", "r"],
     result: {
       type: "operator",
       value: "or",
     },
   },
   {
-    match: [
-      { type: "letter", value: "s" },
-      { type: "letter", value: "u" },
-      { type: "letter", value: "m" },
-      { type: "paren", value: "(" },
-    ],
+    match: ["s", "u", "m", "("],
     result: {
       type: "function",
       value: "sum(",
     },
   },
   {
-    match: [
-      { type: "letter", value: "r" },
-      { type: "letter", value: "o" },
-      { type: "letter", value: "u" },
-      { type: "letter", value: "n" },
-      { type: "letter", value: "d" },
-      { type: "paren", value: "(" },
-    ],
+    match: ["r", "o", "u", "n", "d", "("],
     result: {
       type: "function",
       value: "round(",

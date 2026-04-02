@@ -1,10 +1,9 @@
-function matches(tokens, startIndex, pattern) {
-  return pattern.every((expected, offset) => {
+function matches(tokens, startIndex, patternValues) {
+  console.log("pattern every a", patternValues);
+  return patternValues.every((expected, offset) => {
     const token = tokens[startIndex + offset];
 
-    return (
-      token && token.type === expected.type && token.value === expected.value
-    );
+    return token && token.value === expected;
   });
 }
 
