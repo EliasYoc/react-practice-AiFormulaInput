@@ -2,7 +2,7 @@ function matches(tokens, startIndex, patternValues) {
   return patternValues.every((expected, offset) => {
     const token = tokens[startIndex + offset];
 
-    return token && token.value === expected;
+    return token && token.value.toLowerCase() === expected.toLowerCase();
   });
 }
 

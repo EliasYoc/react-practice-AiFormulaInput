@@ -8,7 +8,7 @@ const patterns = [
     match: ["i", "f", "("],
     result: {
       type: "function",
-      value: "if(",
+      value: "IF(",
     },
   },
   {
@@ -50,14 +50,14 @@ const patterns = [
     match: ["s", "u", "m", "("],
     result: {
       type: "function",
-      value: "sum(",
+      value: "SUM(",
     },
   },
   {
     match: ["r", "o", "u", "n", "d", "("],
     result: {
       type: "function",
-      value: "round(",
+      value: "ROUND(",
     },
   },
 ];
@@ -110,9 +110,9 @@ const sectionsData = [
 ];
 
 const functionTokenDict = {
-  if: ["if(", ";", ";", ")"],
-  sum: ["sum(", ";", ")"],
-  round: ["round(", ")"],
+  if: ["IF(", ";", ";", ")"],
+  sum: ["SUM(", ";", ")"],
+  round: ["ROUND(", ")"],
 };
 
 const getFunctionTokens = (functionName) => {
