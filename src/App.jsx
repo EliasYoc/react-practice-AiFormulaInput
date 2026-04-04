@@ -7,7 +7,7 @@ const patterns = [
   {
     match: ["i", "f", "("],
     result: {
-      type: "function",
+      type: "operator",
       value: "IF(",
     },
   },
@@ -49,14 +49,14 @@ const patterns = [
   {
     match: ["s", "u", "m", "("],
     result: {
-      type: "function",
+      type: "operator",
       value: "SUM(",
     },
   },
   {
     match: ["r", "o", "u", "n", "d", "("],
     result: {
-      type: "function",
+      type: "operator",
       value: "ROUND(",
     },
   },
@@ -259,10 +259,9 @@ function App() {
           );
         }}
         allowedTokenKeys={[
-          { regex: /[+\-*/=<>!]/, type: "operator" },
+          { regex: /[+\-*/=<>!()]/, type: "operator" },
           { keys: [";"], type: "statement-terminator" },
-          { keys: ["(", ")"], type: "parenthesis" },
-          { keys: ["``"], type: "backtick" },
+          { keys: ["`"], type: "backtick" },
           //aqui existe type parenthesis, pero en el dict de funciones existe type paren, hay que unificar. Tal vez inutilizar type de patterns
         ]}
       />
