@@ -219,7 +219,13 @@ const valueMock = [
 ];
 
 function App() {
-  const [value, setValue] = useState(valueMock);
+  const [value, setValue] = useState(
+    valueMock.map((token) => ({
+      type: token.type,
+      value: token.value,
+      color: token.color,
+    })),
+  );
 
   return (
     <>
@@ -243,7 +249,14 @@ function App() {
           return <Chip label={option.label} />;
         }}
         renderOptionToken={(token) => {
-          return <Chip size="small" label={token.value} />;
+          console.log("token", token);
+          return (
+            <Chip
+              style={{ backgroundColor: token.color }}
+              size="small"
+              label={token.value}
+            />
+          );
         }}
         allowedTokenKeys={[
           { regex: /[+\-*/=<>!]/, type: "operator" },
