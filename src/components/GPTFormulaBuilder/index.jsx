@@ -28,7 +28,7 @@ const GPTFormulaBuilder = ({
   sectionsData,
   formatSelectedToken,
   renderOption,
-  renderOptionToken,
+  renderValue,
   fullWidth,
   size,
   disabled,
@@ -149,7 +149,7 @@ const GPTFormulaBuilder = ({
         onClick={handlePopoverOpen}
         handleKeyDown={handleKeyDown}
         onClickClear={() => clear()}
-        renderOptionToken={renderOptionToken}
+        renderValue={renderValue}
         fullWidth={fullWidth}
         size={size}
         disabled={disabled}

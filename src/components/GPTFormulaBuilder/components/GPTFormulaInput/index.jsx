@@ -18,7 +18,7 @@ export default function FormulaInput({
   onClick,
   handleKeyDown,
   onClickClear,
-  renderOptionToken,
+  renderValue,
   fullWidth,
   size,
   disabled,
@@ -70,9 +70,9 @@ export default function FormulaInput({
               </span>
             );
           } else {
-            inputToken = renderOptionToken ? (
+            inputToken = renderValue ? (
               <div style={defaultTokenStyle} onClick={handleClick}>
-                {renderOptionToken(token)}
+                {renderValue(token)}
               </div>
             ) : (
               <Chip

@@ -248,21 +248,17 @@ function App() {
         renderOption={(option) => {
           return <Chip label={option.label} />;
         }}
-        renderOptionToken={(token) => {
-          console.log("token", token);
-          return (
-            <Chip
-              style={{ backgroundColor: token.color }}
-              size="small"
-              label={token.value}
-            />
-          );
-        }}
+        renderValue={(token) => (
+          <Chip
+            style={{ backgroundColor: token.color }}
+            size="small"
+            label={token.value}
+          />
+        )}
         allowedTokenKeys={[
           { regex: /[+\-*/=<>!()]/, type: "operator" },
           { keys: [";"], type: "statement-terminator" },
           { keys: ["`"], type: "backtick" },
-          //aqui existe type parenthesis, pero en el dict de funciones existe type paren, hay que unificar. Tal vez inutilizar type de patterns
         ]}
       />
       <input type="text" placeholder="input para probar tab" />
