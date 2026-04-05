@@ -299,13 +299,18 @@ function App() {
             label={option.label}
           />
         )}
-        renderValue={(token) => (
-          <Chip
-            style={{ backgroundColor: token.color }}
-            size="small"
-            label={token.value}
-          />
-        )}
+        renderValue={(token) => {
+          const section = sectionsData.find(
+            (section) => section.kind === token.type,
+          );
+          return (
+            <Chip
+              style={{ backgroundColor: token.color || section.color }}
+              size="small"
+              label={token.value}
+            />
+          );
+        }}
         allowedTokenKeys={[
           { regex: /[+\-*/=<>!()]/, type: "operator" },
           { keys: [";"], type: "statement-terminator" },
