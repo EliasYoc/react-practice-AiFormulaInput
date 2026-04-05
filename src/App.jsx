@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import "./App.css";
 import GPTFormulaBuilder from "./components/GPTFormulaBuilder";
 import { Chip } from "@mui/material";
@@ -62,52 +62,52 @@ const patterns = [
   },
 ];
 
-const sectionsData = [
-  {
-    id: "operators",
-    title: "Operadores",
-    kind: "operator",
-    labels: ["+", "-", "*", "/", "<", "<=", "=", ">", ">=", "!=", "and", "or"],
-  },
-  {
-    id: "functions",
-    title: "Funciones",
-    kind: "function",
-    labels: ["if", "sum", "round"],
-  },
-  // las siguientes secciones serian dinamicas por lo que deben venir por props
-  {
-    id: "layout",
-    title: "Variables de layout",
-    kind: "layout",
-    labels: ["Nombretab.valor factura", "segundatab.monto total por recibir"],
-  },
-  {
-    id: "global",
-    title: "Variables globales",
-    kind: "global",
-    labels: [
-      "Saldo insoluto",
-      "Servicio de deuda",
-      "Garantias adicionales",
-      "Reserva efectivo",
-      "Garantias de maquinaria",
-      "Saldo Garantias de inmuebles",
-    ],
-  },
-  {
-    id: "section",
-    title: "Sección",
-    kind: "section",
-    labels: [
-      "variable_name",
-      "variable_name",
-      "variable_name",
-      "variable_name",
-      "variable_name",
-    ],
-  },
-];
+// const sectionsData = [
+//   {
+//     id: "operators",
+//     title: "Operadores",
+//     kind: "operator",
+//     labels: ["+", "-", "*", "/", "<", "<=", "=", ">", ">=", "!=", "and", "or"],
+//   },
+//   {
+//     id: "functions",
+//     title: "Funciones",
+//     kind: "function",
+//     labels: ["if", "sum", "round"],
+//   },
+//   // las siguientes secciones serian dinamicas por lo que deben venir por props
+//   {
+//     id: "layout",
+//     title: "Variables de layout",
+//     kind: "layout",
+//     labels: ["Nombretab.valor factura", "segundatab.monto total por recibir"],
+//   },
+//   {
+//     id: "global",
+//     title: "Variables globales",
+//     kind: "global",
+//     labels: [
+//       "Saldo insoluto",
+//       "Servicio de deuda",
+//       "Garantias adicionales",
+//       "Reserva efectivo",
+//       "Garantias de maquinaria",
+//       "Saldo Garantias de inmuebles",
+//     ],
+//   },
+//   {
+//     id: "section",
+//     title: "Sección",
+//     kind: "section",
+//     labels: [
+//       "variable_name",
+//       "variable_name",
+//       "variable_name",
+//       "variable_name",
+//       "variable_name",
+//     ],
+//   },
+// ];
 
 const functionTokenDict = {
   if: ["IF(", ";", ";", ")"],
@@ -217,6 +217,41 @@ const valueMock = [
     color: "#E0E0E0",
   },
 ];
+const optionsMock = {
+  operators: [
+    {
+      name: "+",
+      value: "+",
+      color: "#B2DFDB",
+    },
+    {
+      name: "-",
+      value: "-",
+      color: "#B2DFDB",
+    },
+    {
+      name: "*",
+      value: "*",
+      color: "#B2DFDB",
+    },
+    {
+      name: "/",
+      value: "/",
+      color: "#B2DFDB",
+    },
+    {
+      name: "(",
+      value: "(",
+      color: "#B2DFDB",
+    },
+    {
+      name: ")",
+      value: ")",
+      color: "#B2DFDB",
+    },
+  ],
+  functions: [],
+};
 
 function App() {
   const [value, setValue] = useState(
@@ -225,6 +260,18 @@ function App() {
       value: token.value,
       color: token.color,
     })),
+  );
+
+  const sectionsData = useMemo(
+    () =>
+      Object.entries(optionsMock).map(([key, items]) => ({
+        id: key,
+        title: key.charAt(0).toUpperCase() + key.slice(1), // operators -> Operators
+        kind: key.slice(0, -1), // operators -> operator
+        color: (items[0] && items[0].color) || "#000",
+        labels: items.map((item) => item.value),
+      })),
+    [],
   );
 
   return (
@@ -245,9 +292,13 @@ function App() {
             return functionTokens;
           }
         }}
-        renderOption={(option) => {
-          return <Chip size="small" label={option.label} />;
-        }}
+        renderOption={(option) => (
+          <Chip
+            size="small"
+            style={{ backgroundColor: option.section.color }}
+            label={option.label}
+          />
+        )}
         renderValue={(token) => (
           <Chip
             style={{ backgroundColor: token.color }}
