@@ -246,7 +246,7 @@ function App() {
           }
         }}
         renderOption={(option) => {
-          return <Chip label={option.label} />;
+          return <Chip size="small" label={option.label} />;
         }}
         renderValue={(token) => (
           <Chip
