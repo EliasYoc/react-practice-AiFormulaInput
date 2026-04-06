@@ -378,7 +378,9 @@ function App() {
 
           return (
             <Chip
-              style={{ backgroundColor: token.color || section.color }}
+              style={{
+                backgroundColor: token.color || (section && section.color),
+              }}
               size="small"
               label={token.value}
             />
