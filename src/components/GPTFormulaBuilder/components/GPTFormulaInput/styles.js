@@ -30,7 +30,7 @@ export const InputContainer = styled.div`
   align-items: center;
   padding: 8px;
   cursor: text;
-  gap: 1px;
+  gap: 2px;
 `;
 
 export const Cursor = styled.span`
