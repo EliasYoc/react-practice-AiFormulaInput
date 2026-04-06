@@ -284,7 +284,7 @@ function App() {
         onChange={setValue}
         sectionsData={sectionsData}
         tokenPatterns={patterns}
-        formatSelectedToken={(tokenItem) => {
+        transformSelectedToken={(tokenItem) => {
           if (tokenItem.section.kind === "function") {
             const functionTokens = getFunctionTokens(tokenItem.value);
             console.log("functionTokens", functionTokens);

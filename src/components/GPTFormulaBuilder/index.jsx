@@ -26,7 +26,7 @@ const GPTFormulaBuilder = ({
   onChange,
   tokenPatterns = [],
   sectionsData,
-  formatSelectedToken,
+  transformSelectedToken,
   renderOption,
   renderValue,
   fullWidth,
@@ -56,8 +56,8 @@ const GPTFormulaBuilder = ({
 
   const handlePopoverSelect = (option) => {
     console.log("select option", option);
-    if (formatSelectedToken) {
-      const tokenValues = formatSelectedToken(option);
+    if (transformSelectedToken) {
+      const tokenValues = transformSelectedToken(option);
 
       const tokens =
         tokenValues &&
