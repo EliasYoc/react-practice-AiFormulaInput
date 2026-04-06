@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import "./App.css";
 import GPTFormulaBuilder from "./components/GPTFormulaBuilder";
 import { Chip } from "@mui/material";
+import * as lodash from "lodash";
 
 const patterns = [
   {
@@ -253,6 +254,49 @@ const optionsMock = {
   functions: [],
 };
 
+const variableMock = [
+  {
+    name: "actual.Ingresos",
+    column: "Ingresos",
+    tab: "Datos Financieros",
+    status: "actual",
+    column_uuid: "c9d0e1f2-a3b4-4567-c890-d1e2f3a4b567",
+    tab_uuid: "f6a7b8c9-d0e1-4234-f567-a8b9c0d1e234",
+    color: "#2282EB",
+    type: "column",
+  },
+  {
+    name: "previo.Ingresos",
+    column: "Ingresos",
+    tab: "Datos Financieros",
+    status: "previo",
+    column_uuid: "c9d0e1f2-a3b4-4567-c890-d1e2f3a4b567",
+    tab_uuid: "f6a7b8c9-d0e1-4234-f567-a8b9c0d1e234",
+    color: "#4CAF50",
+    type: "column",
+  },
+  {
+    name: "sesion.Ingresos",
+    column: "Ingresos",
+    tab: "Datos Financieros",
+    status: "sesion",
+    column_uuid: "c9d0e1f2-a3b4-4567-c890-d1e2f3a4b567",
+    tab_uuid: "f6a7b8c9-d0e1-4234-f567-a8b9c0d1e234",
+    color: "#EF7D00",
+    type: "column",
+  },
+  {
+    name: "Gastos Totales",
+    column: "Gastos Totales",
+    tab: "Datos Financieros",
+    status: null,
+    column_uuid: "d0e1f2a3-b4c5-4678-d901-e2f3a4b5c678",
+    tab_uuid: "f6a7b8c9-d0e1-4234-f567-a8b9c0d1e234",
+    color: "#7A2296",
+    type: "campo_para_datos",
+  },
+];
+
 function App() {
   const [value, setValue] = useState(
     valueMock.map((token) => ({
@@ -262,7 +306,17 @@ function App() {
     })),
   );
 
-  const sectionsData = useMemo(
+  const variableSectionsData = useMemo(() => {
+    const groupedByColumn = lodash.groupBy(variableMock, "column_uuid");
+    return Object.entries(groupedByColumn).map(([key, items]) => ({
+      id: key,
+      title: items[0].column,
+      kind: "var",
+      labels: items.map((item) => item.name),
+    }));
+  }, []);
+
+  const operatorSectionsData = useMemo(
     () =>
       Object.entries(optionsMock).map(([key, items]) => ({
         id: key,
@@ -274,6 +328,8 @@ function App() {
     [],
   );
 
+  const sectionData = [...operatorSectionsData, ...variableSectionsData];
+
   return (
     <>
       <input type="text" placeholder="input para probar tab" />
@@ -282,7 +338,7 @@ function App() {
         placeholder="Escribe una formula"
         value={value}
         onChange={setValue}
-        sectionsData={sectionsData}
+        sectionsData={sectionData}
         tokenPatterns={patterns}
         transformSelectedToken={(tokenItem) => {
           if (tokenItem.section.kind === "function") {
@@ -300,9 +356,10 @@ function App() {
           />
         )}
         renderValue={(token) => {
-          const section = sectionsData.find(
+          const section = sectionData.find(
             (section) => section.kind === token.type,
           );
+
           return (
             <Chip
               style={{ backgroundColor: token.color || section.color }}
