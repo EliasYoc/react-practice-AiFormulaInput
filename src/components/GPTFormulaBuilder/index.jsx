@@ -55,7 +55,6 @@ const GPTFormulaBuilder = ({
   };
 
   const handlePopoverSelect = (option) => {
-    console.log("select option", option);
     if (transformSelectedToken) {
       const tokenValues = transformSelectedToken(option);
 
