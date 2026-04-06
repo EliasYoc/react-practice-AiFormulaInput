@@ -132,8 +132,6 @@ const GPTFormulaBuilder = ({
   }, [tokenPatterns, replaceTokens]);
 
   useEffect(() => {
-    console.log("effect", value);
-    //este se ejecuta al usar la key y el popper (evitar ejecutarse al seleccionar en popper)
     transformTokensDebounced(value);
     return () => {
       transformTokensDebounced.cancel();

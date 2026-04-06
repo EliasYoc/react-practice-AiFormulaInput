@@ -251,7 +251,23 @@ const optionsMock = {
       color: "#B2DFDB",
     },
   ],
-  functions: [],
+  functions: [
+    {
+      name: "if",
+      value: "if",
+      color: "#B2DFDB",
+    },
+    {
+      name: "sum",
+      value: "sum",
+      color: "#B2DFDB",
+    },
+    {
+      name: "round",
+      value: "round",
+      color: "#B2DFDB",
+    },
+  ],
 };
 
 const variableMock = [
