@@ -387,6 +387,9 @@ function App() {
             />
           );
         }}
+        // keepAsText se mantiene como texto, y no es tomado encuenta en renderValue
+        // keys son los characteres permitidos porque por defecto solo se permite escribir letras, numeros y espacios
+        // type se usa para los token, es decir el onchange recibirá el type y el value
         allowedTokenKeys={[
           { regex: /[+\-*/=<>!()]/, type: "operator" },
           { keys: [";"], type: "statement-terminator" },
