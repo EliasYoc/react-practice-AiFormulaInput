@@ -23,6 +23,7 @@ export default function FormulaInput({
   size,
   disabled,
   placeholder,
+  allowedTokenKeys,
 }) {
   const inputRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -57,32 +58,31 @@ export default function FormulaInput({
             zIndex: 1,
           };
           let inputToken;
-          if (["letter", "space", "number"].includes(token.type)) {
-            inputToken = (
-              <span
-                onClick={handleClick}
-                style={{
-                  ...defaultTokenStyle,
-                  padding: token.type === "space" ? "0 .2rem" : "",
-                }}
-              >
-                {token.value}
-              </span>
-            );
-          } else {
-            inputToken = renderValue ? (
-              <div style={defaultTokenStyle} onClick={handleClick}>
-                {renderValue(token)}
-              </div>
-            ) : (
-              <Chip
-                style={defaultTokenStyle}
-                size="small"
-                onClick={handleClick}
-                label={token.value}
-              />
-            );
-          }
+
+          const allowedToken = allowedTokenKeys.find(
+            (allowedTokenKey) => allowedTokenKey.type === token.type,
+          ) || { keepAsText: false };
+
+          const isKeepingAsText =
+            !renderValue ||
+            allowedToken.keepAsText ||
+            ["letter", "space", "number"].includes(token.type);
+
+          inputToken = isKeepingAsText ? (
+            <span
+              onClick={handleClick}
+              style={{
+                ...defaultTokenStyle,
+                padding: token.type === "space" ? "0 .2rem" : "",
+              }}
+            >
+              {token.value}
+            </span>
+          ) : (
+            <div style={defaultTokenStyle} onClick={handleClick}>
+              {renderValue(token)}
+            </div>
+          );
 
           return (
             <React.Fragment key={i}>

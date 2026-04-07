@@ -151,6 +151,7 @@ const GPTFormulaBuilder = ({
         size={size}
         disabled={disabled}
         placeholder={placeholder}
+        allowedTokenKeys={allowedTokenKeys}
       />
 
       <FormulaPopover

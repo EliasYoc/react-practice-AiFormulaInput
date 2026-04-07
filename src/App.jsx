@@ -390,7 +390,8 @@ function App() {
         allowedTokenKeys={[
           { regex: /[+\-*/=<>!()]/, type: "operator" },
           { keys: [";"], type: "statement-terminator" },
-          { keys: ["`"], type: "backtick" },
+          { keys: ["."], type: "dot", keepAsText: true },
+          { keys: ["`"], type: "backtick", keepAsText: true },
         ]}
       />
       <input type="text" placeholder="input para probar tab" />
