@@ -323,10 +323,11 @@ function App() {
   );
 
   const variableSectionsData = useMemo(() => {
-    const groupedByColumn = lodash.groupBy(variableMock, "column_uuid");
+    const groupedByColumn = lodash.groupBy(variableMock, "status");
     return Object.entries(groupedByColumn).map(([key, items]) => ({
       id: key,
-      title: items[0].column,
+      title: key,
+      color: items[0].color,
       kind: "var",
       labels: items.map((item) => item.name),
     }));
