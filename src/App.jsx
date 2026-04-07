@@ -358,6 +358,7 @@ function App() {
         sectionsData={sectionData}
         tokenPatterns={patterns}
         transformSelectedToken={(tokenItem) => {
+          // solo se debe retornar un array de string si no se retorna nada se tomara el token por defecto
           if (tokenItem.section.kind === "function") {
             const functionTokens = getFunctionTokens(tokenItem.value);
             console.log("functionTokens", functionTokens);
