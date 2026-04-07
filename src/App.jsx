@@ -378,10 +378,17 @@ function App() {
             (section) => section.kind === token.type,
           );
 
+          const variable = variableMock.find(
+            (variable) => variable.name === token.value,
+          );
+
           return (
             <Chip
               style={{
-                backgroundColor: token.color || (section && section.color),
+                backgroundColor:
+                  token.color ||
+                  (variable && variable.color) ||
+                  (section && section.color),
               }}
               size="small"
               label={token.value}
